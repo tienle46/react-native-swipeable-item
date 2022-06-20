@@ -180,6 +180,7 @@ function SwipeableItem<T>(
   function openLeft(snapPoint?: number) {
     return new Promise<void>((resolve) => {
       function resolvePromiseIfFinished(isFinished: boolean) {
+        setOpenDirection(OpenDirection.LEFT)
         if (isFinished) resolve();
       }
       animStatePos.value = withSpring(
@@ -194,6 +195,7 @@ function SwipeableItem<T>(
   function openRight(snapPoint?: number) {
     return new Promise<void>((resolve) => {
       function resolvePromiseIfFinished(isFinished: boolean) {
+        setOpenDirection(OpenDirection.RIGHT)
         if (isFinished) resolve();
       }
       animStatePos.value = withSpring(
