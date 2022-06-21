@@ -180,8 +180,12 @@ function SwipeableItem<T>(
   function openLeft(snapPoint?: number) {
     return new Promise<void>((resolve) => {
       function resolvePromiseIfFinished(isFinished: boolean) {
-        setOpenDirection(OpenDirection.LEFT)
-        if (isFinished) resolve();
+        
+        if (isFinished) {
+          setOpenDirection(OpenDirection.LEFT)
+          onChange({ open: OpenDirection.LEFT, snapPoint: snapPoint ? snapPoint : maxSnapPointLeft });
+          resolve()
+        };
       }
       animStatePos.value = withSpring(
         snapPoint ?? maxSnapPointLeft,
@@ -196,7 +200,11 @@ function SwipeableItem<T>(
     return new Promise<void>((resolve) => {
       function resolvePromiseIfFinished(isFinished: boolean) {
         setOpenDirection(OpenDirection.RIGHT)
-        if (isFinished) resolve();
+        if (isFinished) {
+          setOpenDirection(OpenDirection.RIGHT)
+          onChange({ open: OpenDirection.RIGHT, snapPoint: snapPoint ? snapPoint : maxSnapPointRight });
+          resolve()
+        }
       }
       animStatePos.value = withSpring(
         snapPoint ?? maxSnapPointRight,
@@ -211,7 +219,10 @@ function SwipeableItem<T>(
   function close() {
     return new Promise<void>((resolve) => {
       function resolvePromiseIfFinished(isFinished: boolean) {
-        if (isFinished) resolve();
+        if (isFinished) {
+          onChange({ open: OpenDirection.NONE, snapPoint:0 });
+          resolve()
+        };
       }
       animStatePos.value = withSpring(0, springConfig, (isFinished) => {
         runOnJS(resolvePromiseIfFinished)(isFinished);
